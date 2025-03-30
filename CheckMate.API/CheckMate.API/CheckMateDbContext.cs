@@ -5,8 +5,6 @@ namespace CheckMate.API
 {
     public class CheckMateDbContext : DbContext
     {
-        internal const string ConnectionStringName = nameof(CheckMateDbContext) + "ConnectionString";
-
         public CheckMateDbContext(DbContextOptions<CheckMateDbContext> options) : base(options)
         {
         }

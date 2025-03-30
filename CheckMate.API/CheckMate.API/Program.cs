@@ -12,9 +12,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//builder.Services.AddDbContext<CheckMateDbContext>(options =>
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("CheckMateDB")));
-
 builder.Services.AddDbContextFactory<CheckMateDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("CheckMateDBConnectionString"));

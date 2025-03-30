@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CheckMate.API.Migrations
 {
     [DbContext(typeof(CheckMateDbContext))]
-    [Migration("20250330212147_InitialCreate")]
+    [Migration("20250330214613_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
