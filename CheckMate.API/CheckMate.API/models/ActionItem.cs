@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure;
-
-namespace CheckMate.API.models
+﻿namespace CheckMate.API.models
 {
     public class ActionItem
     {
