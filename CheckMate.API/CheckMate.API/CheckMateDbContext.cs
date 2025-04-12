@@ -1,4 +1,5 @@
-﻿using CheckMate.API.models;
+﻿using CheckMate.API.Configuration;
+using CheckMate.API.models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CheckMate.API
@@ -10,7 +11,12 @@ namespace CheckMate.API
         }
 
         public virtual DbSet<ActionItem> ActionItems { get; set; }
-        public virtual DbSet<ActionItemStatus> ActionItemStatuses { get; set; }
         public virtual DbSet<User> Users { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new ActionItemConfiguration());
+        }
     }
 }

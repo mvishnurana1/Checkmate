@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CheckMate.API.Migrations
 {
     [DbContext(typeof(CheckMateDbContext))]
-    [Migration("20250330214613_InitialCreate")]
+    [Migration("20250412091830_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -34,58 +34,43 @@ namespace CheckMate.API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ActionItemID"));
 
                     b.Property<string>("ActionItemDescription")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ActionItemName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("datetimeoffset");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset(7)")
+                        .HasDefaultValueSql("((sysdatetimeoffset() AT TIME ZONE 'W. Australia Standard Time'))");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<DateTimeOffset?>("ModifiedDate")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("datetimeoffset(7)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasDefaultValue("Open");
 
                     b.Property<int>("UserID")
                         .HasColumnType("int");
 
-                    b.HasKey("ActionItemID");
+                    b.HasKey("ActionItemID")
+                        .HasName("ActionItemID");
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("ActionItems");
-                });
-
-            modelBuilder.Entity("CheckMate.API.models.ActionItemStatus", b =>
-                {
-                    b.Property<int>("ActionItemStatusId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ActionItemStatusId"));
-
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("KnownActionDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("KnownActionItemStatus")
-                        .HasColumnType("int");
-
-                    b.Property<DateTimeOffset>("ModifiedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.HasKey("ActionItemStatusId");
-
-                    b.ToTable("ActionItemStatuses");
+                    b.ToTable("ActionItem", (string)null);
                 });
 
             modelBuilder.Entity("CheckMate.API.models.User", b =>
@@ -97,40 +82,48 @@ namespace CheckMate.API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
                     b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("datetimeoffset");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset(7)")
+                        .HasDefaultValueSql("((sysdatetimeoffset() AT TIME ZONE 'W. Australia Standard Time'))");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTimeOffset?>("ModifiedDate")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("datetimeoffset(7)");
 
-                    b.HasKey("UserId");
+                    b.HasKey("UserId")
+                        .HasName("UserID");
 
-                    b.ToTable("Users");
+                    b.ToTable("User", (string)null);
                 });
 
             modelBuilder.Entity("CheckMate.API.models.ActionItem", b =>
                 {
-                    b.HasOne("CheckMate.API.models.User", "User")
+                    b.HasOne("CheckMate.API.models.User", "CreatedBy")
                         .WithMany("ActionItems")
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("CreatedBy");
                 });
 
             modelBuilder.Entity("CheckMate.API.models.User", b =>
