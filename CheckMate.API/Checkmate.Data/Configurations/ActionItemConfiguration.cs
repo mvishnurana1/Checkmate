@@ -1,4 +1,4 @@
-﻿using CheckMate.API.models;
+﻿using CheckMate.Data.models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -45,6 +45,5 @@ namespace CheckMate.API.Configuration
         }
 
         partial void OnConfigurePartial(EntityTypeBuilder<ActionItem> entity);
-
     }
 }

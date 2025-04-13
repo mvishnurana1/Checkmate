@@ -1,12 +1,12 @@
-﻿using CheckMate.API.models;
+﻿using CheckMate.Data.models;
 using CheckMate.API.Configuration;
 using Microsoft.EntityFrameworkCore;
 
-namespace CheckMate.API
+namespace Checkmate.Data
 {
     public class CheckMateDbContext : DbContext
     {
-        public CheckMateDbContext(DbContextOptions<CheckMateDbContext> options) : base(options) {}
+        public CheckMateDbContext(DbContextOptions<CheckMateDbContext> options) : base(options) { }
 
         public virtual DbSet<ActionItem> ActionItems { get; set; }
         public virtual DbSet<User> Users { get; set; }

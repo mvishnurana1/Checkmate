@@ -1,4 +1,4 @@
-﻿namespace CheckMate.API.models
+﻿namespace CheckMate.Data.models
 {
     public class ActionItem
     {
