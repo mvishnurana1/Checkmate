@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace CheckMate.API.models
+namespace CheckMate.Data.models
 {
     public enum KnownActionItemStatus
     {

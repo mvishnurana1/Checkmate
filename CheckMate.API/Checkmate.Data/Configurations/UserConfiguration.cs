@@ -1,4 +1,4 @@
-﻿using CheckMate.API.models;
+﻿using CheckMate.Data.models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,8 +9,9 @@ namespace CheckMate.API.Configuration
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.ToTable("User");
+
             builder.HasKey(x => x.UserId)
-                    .HasName("UserID");
+                   .HasName("UserID");
 
             builder.Property(x => x.UserId)
                    .ValueGeneratedOnAdd();
@@ -40,8 +41,8 @@ namespace CheckMate.API.Configuration
             builder.HasMany(u => u.ActionItems)
                    .WithOne(a => a.CreatedBy)
                    .HasForeignKey(a => a.UserID);
-            
-            OnConfigurePartial(builder);
+
+           OnConfigurePartial(builder);
         }
 
         partial void OnConfigurePartial(EntityTypeBuilder<User> entity);
