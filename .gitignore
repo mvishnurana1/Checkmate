@@ -32,3 +32,50 @@ msbuild.wrn
 
 # Visual Studio 2015
 .vs/
+
+
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# Node
+/CheckMate.App/node_modules
+/CheckMate.App/npm-debug.log
+/CheckMate.App/yarn-error.log
+/CheckMate.App/.editorconfig
+/CheckMate.App/.angular
+
+
+# IDEs and editors
+/CheckMate.App/.idea/
+/CheckMate.App/.project
+/CheckMate.App/.classpath
+/CheckMate.App/.c9/
+/CheckMate.App/*.launch
+/CheckMate.App/.settings/
+/CheckMate.App/*.sublime-workspace
+
+# Visual Studio Code
+/CheckMate.App/.vscode/*
+/CheckMate.App/!.vscode/settings.json
+/CheckMate.App/!.vscode/tasks.json
+/CheckMate.App/!.vscode/launch.json
+/CheckMate.App/!.vscode/extensions.json
+/CheckMate.App/.history/*
+
+# Miscellaneous
+/CheckMate.App//.angular/cache
+/CheckMate.App/.sass-cache/
+/CheckMate.App/connect.lock
+/CheckMate.App/coverage
+/CheckMate.App/libpeerconnection.log
+/CheckMate.App/testem.log
+/CheckMate.App/typings
+
+# System files
+/CheckMate.App/.DS_Store
+/CheckMate.App/Thumbs.db
