@@ -32,6 +32,8 @@ builder.Services.AddDbContextFactory<CheckMateDbContext>(options =>
 //});
 
 builder.Services.AddCors();
+builder.Configuration
+       .AddEnvironmentVariables();
 
 builder.Services.AddAuthentication(options =>
 {
