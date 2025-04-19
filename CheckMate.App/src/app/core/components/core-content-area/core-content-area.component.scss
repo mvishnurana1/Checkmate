@@ -1,0 +1,42 @@
+:host ::ng-deep {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    .core-content-area-header, core-content-area-header {
+        padding-bottom: 20px;
+        display: flex;
+        flex-direction: row;
+    }
+
+    // No child elements
+    core-content-area-header:not(:has(*)) {
+        flex-grow: 1;
+        font-size: var(--font-size-h2);
+        font-family: var(--heading-font-family);
+        font-weight: 400;
+        text-transform: uppercase;
+        white-space: nowrap
+    }
+
+    // More than 1 child element
+    core-content-area-header:has(> :nth-child(1)) {
+        flex-grow: 1;
+
+        > :first-child {
+            font-size: var(--font-size-h2);
+            font-family: var(--heading-font-family);
+            font-weight: 400;
+            text-transform: uppercase;
+            flex-grow: 1;
+            white-space: nowrap
+        }
+    }
+
+    .core-content-area-body, core-content-area-body  {
+        display: flex;
+        flex: 1 1 auto;
+        flex-grow: inherit;
+    }
+}
