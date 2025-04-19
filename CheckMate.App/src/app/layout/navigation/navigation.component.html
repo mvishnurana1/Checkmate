@@ -3,22 +3,28 @@
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="(isHandset$ | async) === false">
-    <mat-toolbar>Menu</mat-toolbar>
-    <mat-nav-list class="list">
-      <a mat-list-item href="#">
-        <div class="nav-menu-item">
-          <div>
-            <mat-icon>monitoring</mat-icon>
-          </div>
-          <div>Dashboard</div>
+    <mat-toolbar>
+      @if (isHandset$ | async) {
+        <div (click)="drawer.toggle()" class="toggle-container">
+          <mat-icon>menu_open</mat-icon>
         </div>
-      </a>
+      }
+    </mat-toolbar>
+    <mat-nav-list class="list">
       <a mat-list-item href="#">
         <div class="nav-menu-item">
           <div>
             <mat-icon>home</mat-icon>
           </div>
-          <div>Home</div>
+          <div class="menu-text">Home</div>
+        </div>
+      </a>
+      <a mat-list-item href="#">
+        <div class="nav-menu-item">
+          <div>
+            <mat-icon>monitoring</mat-icon>
+          </div>
+          <div class="menu-text">Dashboard</div>
         </div>
       </a>
       <a mat-list-item href="#">
@@ -26,7 +32,7 @@
           <div>
             <mat-icon>settings</mat-icon>
           </div>
-          <div>Settings</div>
+          <div class="menu-text">Settings</div>
         </div>
       </a>
     </mat-nav-list>
