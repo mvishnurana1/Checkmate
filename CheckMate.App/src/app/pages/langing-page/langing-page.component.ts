@@ -47,4 +47,9 @@ export class LangingPageComponent {
     )
     .subscribe();
   }
+
+  signOut(): void {
+    localStorage.removeItem('access_token');
+    this.router.navigate(['/login']);
+  }
 }

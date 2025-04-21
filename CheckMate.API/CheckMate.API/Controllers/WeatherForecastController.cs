@@ -41,6 +41,7 @@ namespace CheckMate.API.Controllers
         {
             var redirectUrl = Url.Action("GoogleResponse", "WeatherForecast");
             var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+            
             return Challenge(properties, GoogleDefaults.AuthenticationScheme);
         }
 
@@ -49,20 +50,15 @@ namespace CheckMate.API.Controllers
         {
             var result = await HttpContext.AuthenticateAsync();
             var email = result.Principal!.FindFirst(ClaimTypes.Email)?.Value!;
-            var name = result.Principal!.FindFirst(ClaimTypes.Name)?.Value!;
-            var gender = result.Principal!.FindFirst(ClaimTypes.Gender)?.Value!;
 
 
             string issuer = _configuration["Jwt:Issuer"]!;
             string audience = _configuration["Jwt:Audience"]!;
             string secret = _configuration["Jwt:Secret"]!;
 
-            var token = JwtHelper.CreateToken(email, name, gender, issuer, audience, secret);
+            var token = JwtHelper.CreateToken(email, issuer, audience, secret);
 
-            _logger.Log(LogLevel.Information, token);
-
-            // Redirect back to Angular with token
-            return Redirect($"http://localhost:4200/auth-callback?token={token}");
+            return Ok(new { token });
         }
     }
 }
