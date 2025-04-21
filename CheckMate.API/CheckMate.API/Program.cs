@@ -1,14 +1,13 @@
+using System.Text;
 using Checkmate.Data;
-using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -21,38 +20,41 @@ builder.Services.AddDbContextFactory<CheckMateDbContext>(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(
-        builder =>
-        {
-            builder.WithOrigins("https://localhost:44351", "http://localhost:4200")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();
-        }
-    );
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder
+        .AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
 });
 
-builder.Services.AddCors();
 builder.Configuration
        .AddEnvironmentVariables();
 
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme; // for sign-in
     options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
 })
 .AddCookie()
 .AddGoogle(options =>
 {
-    var clientID = builder.Configuration["Authentication:Google:ClientId"];
-    var secret = builder.Configuration["Authentication:Google:ClientSecret"];
-
-    options.ClientId = clientID!;
-    options.ClientSecret = secret!;
-    options.Scope.Add("profile");
-    options.Scope.Add("email");
-    options.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "sub");
-    options.ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
-    options.ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+    options.ClientId = builder.Configuration["Authentication:Google:ClientId"]!;
+    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"]!;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]!))
+    };
 });
 
 var app = builder.Build();
@@ -65,6 +67,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAll");
 
 app.UseAuthentication();
 app.UseAuthorization();

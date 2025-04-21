@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { RouterOutlet } from '@angular/router';
+import { LangingPageComponent } from '../../pages';
 
 @Component({
   selector: 'app-navigation',
@@ -22,6 +23,7 @@ import { RouterOutlet } from '@angular/router';
     MatIconModule,
     AsyncPipe,
     RouterOutlet,
+    LangingPageComponent,
   ]
 })
 export class NavigationComponent {
