@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Checkmate.Data.Migrations
 {
     [DbContext(typeof(CheckMateDbContext))]
-    [Migration("20250413070306_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250425071405_InitialMigrations")]
+    partial class InitialMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,7 +70,13 @@ namespace Checkmate.Data.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("ActionItem", (string)null);
+                    b.HasIndex(new[] { "ActionItemName", "CreatedDate" }, "IX_Unique_ActionName_CreatedDate")
+                        .IsUnique();
+
+                    b.ToTable("ActionItem", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_Status_Value", "[Status] IN ('open','closed','removed')");
+                        });
                 });
 
             modelBuilder.Entity("CheckMate.Data.models.User", b =>
@@ -111,6 +117,9 @@ namespace Checkmate.Data.Migrations
 
                     b.HasKey("UserId")
                         .HasName("UserID");
+
+                    b.HasIndex(new[] { "Email" }, "UIX_User_Email")
+                        .IsUnique();
 
                     b.ToTable("User", (string)null);
                 });

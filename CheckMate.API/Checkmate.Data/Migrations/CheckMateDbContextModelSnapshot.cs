@@ -67,7 +67,13 @@ namespace Checkmate.Data.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("ActionItem", (string)null);
+                    b.HasIndex(new[] { "ActionItemName", "CreatedDate" }, "IX_Unique_ActionName_CreatedDate")
+                        .IsUnique();
+
+                    b.ToTable("ActionItem", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_Status_Value", "[Status] IN ('open','closed','removed')");
+                        });
                 });
 
             modelBuilder.Entity("CheckMate.Data.models.User", b =>
@@ -108,6 +114,9 @@ namespace Checkmate.Data.Migrations
 
                     b.HasKey("UserId")
                         .HasName("UserID");
+
+                    b.HasIndex(new[] { "Email" }, "UIX_User_Email")
+                        .IsUnique();
 
                     b.ToTable("User", (string)null);
                 });

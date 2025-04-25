@@ -79,3 +79,4 @@ msbuild.wrn
 # System files
 /CheckMate.App/.DS_Store
 /CheckMate.App/Thumbs.db
+client_secret.json
