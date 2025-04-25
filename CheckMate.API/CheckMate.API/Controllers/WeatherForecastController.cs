@@ -1,8 +1,10 @@
-using CheckMate.API.Auth;
+﻿using CheckMate.API.Auth;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace CheckMate.API.Controllers
 {
@@ -48,10 +50,12 @@ namespace CheckMate.API.Controllers
         [HttpGet("GoogleResponse")]
         public async Task<IActionResult> GoogleResponse()
         {
-            var result = await HttpContext.AuthenticateAsync();
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            if (!result.Succeeded || result.Principal == null)
+                return Unauthorized();
+
             var email = result.Principal!.FindFirst(ClaimTypes.Email)?.Value!;
-
-
             string issuer = _configuration["Jwt:Issuer"]!;
             string audience = _configuration["Jwt:Audience"]!;
             string secret = _configuration["Jwt:Secret"]!;
