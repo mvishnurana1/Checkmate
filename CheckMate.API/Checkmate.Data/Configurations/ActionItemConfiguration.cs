@@ -8,7 +8,7 @@ namespace CheckMate.API.Configuration
     {
         public void Configure(EntityTypeBuilder<ActionItem> builder)
         {
-            builder.ToTable("ActionItem");
+            builder.ToTable("ActionItem", x => x.HasCheckConstraint("CK_Status_Value", "[Status] IN ('open','closed','removed')"));
             builder.HasKey(x => x.ActionItemID)
                    .HasName("ActionItemID");
 
@@ -36,6 +36,9 @@ namespace CheckMate.API.Configuration
             builder.Property(x => x.CreatedDate)
                    .HasColumnType("datetimeoffset(7)")
                    .HasDefaultValueSql("((sysdatetimeoffset() AT TIME ZONE 'W. Australia Standard Time'))");
+
+            builder.HasIndex(x => new { x.ActionItemName, x.CreatedDate }, "IX_Unique_ActionName_CreatedDate")
+                   .IsUnique();
 
             builder.HasOne(a => a.CreatedBy)
                    .WithMany(u => u.ActionItems)

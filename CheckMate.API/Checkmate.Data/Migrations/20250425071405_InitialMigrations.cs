@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Checkmate.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialMigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -46,6 +46,7 @@ namespace Checkmate.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("ActionItemID", x => x.ActionItemID);
+                    table.CheckConstraint("CK_Status_Value", "[Status] IN ('open','closed','removed')");
                     table.ForeignKey(
                         name: "FK_ActionItem_User_UserID",
                         column: x => x.UserID,
@@ -58,6 +59,18 @@ namespace Checkmate.Data.Migrations
                 name: "IX_ActionItem_UserID",
                 table: "ActionItem",
                 column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Unique_ActionName_CreatedDate",
+                table: "ActionItem",
+                columns: new[] { "ActionItemName", "CreatedDate" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "UIX_User_Email",
+                table: "User",
+                column: "Email",
+                unique: true);
         }
 
         /// <inheritdoc />

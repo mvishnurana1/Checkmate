@@ -42,6 +42,8 @@ namespace CheckMate.API.Configuration
                    .WithOne(a => a.CreatedBy)
                    .HasForeignKey(a => a.UserID);
 
+            builder.HasIndex(x => x.Email, "UIX_User_Email").IsUnique();
+
            OnConfigurePartial(builder);
         }
 
